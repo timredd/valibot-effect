@@ -1,15 +1,60 @@
 {
-  "name": "valibot-plugin-effect",
-  "module": "src/index.ts",
+  "name": "valibot-effect",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Effect compatibility layer for Valibot",
+  "homepage": "https://github.com/timredd/valibot-effect",
+  "contributors": [
+    {
+      "name": "Tim Redd"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timredd/valibot-effect"
+  },
+  "keywords": [
+    "valibot",
+    "effect",
+    "schema",
+    "converter"
+  ],
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "bun run --bun vitest --typecheck",
+    "coverage": "bun run --bun vitest run --coverage --isolate",
+    "build": "bun build"
+  },
   "devDependencies": {
+    "@effect/vitest": "^0.25.1",
     "@types/bun": "latest",
     "effect": "^3.17.13",
-    "valibot": "^1.1.0"
+    "valibot": "^1.1.0",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
     "effect": "^3.0.0",
-    "valibot": "^1.1.0",
-    "typescript": "^5"
+    "valibot": "^1.1.0"
   }
 }
