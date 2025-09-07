@@ -33,24 +33,22 @@ describe("Parsing", () => {
       const result = yield* pipe(parse(schema, 100), Effect.either);
       assertLeft(
         result,
-        new ValiError({
-          cause: new v.ValiError([
-            {
-              abortEarly: undefined,
-              abortPipeEarly: undefined,
-              expected: "string",
-              input: 100,
-              issues: undefined,
-              kind: "schema",
-              lang: undefined,
-              message: "Invalid type: Expected string but received 100",
-              path: undefined,
-              received: "100",
-              requirement: undefined,
-              type: "string",
-            },
-          ]),
-        }),
+        new ValiError([
+          {
+            abortEarly: undefined,
+            abortPipeEarly: undefined,
+            expected: "string",
+            input: 100,
+            issues: undefined,
+            kind: "schema",
+            lang: undefined,
+            message: "Invalid type: Expected string but received 100",
+            path: undefined,
+            received: "100",
+            requirement: undefined,
+            type: "string",
+          },
+        ]),
       );
     }),
   );
@@ -106,24 +104,22 @@ describe("Parsing", () => {
       const result = yield* pipe(parseAsync(schema, 100), Effect.either);
       assertLeft(
         result,
-        new ValiError({
-          cause: new v.ValiError([
-            {
-              abortEarly: undefined,
-              abortPipeEarly: undefined,
-              expected: "string",
-              input: 100,
-              issues: undefined,
-              kind: "schema",
-              lang: undefined,
-              message: "Invalid type: Expected string but received 100",
-              path: undefined,
-              received: "100",
-              requirement: undefined,
-              type: "string",
-            },
-          ]),
-        }),
+        new ValiError([
+          {
+            abortEarly: undefined,
+            abortPipeEarly: undefined,
+            expected: "string",
+            input: 100,
+            issues: undefined,
+            kind: "schema",
+            lang: undefined,
+            message: "Invalid type: Expected string but received 100",
+            path: undefined,
+            received: "100",
+            requirement: undefined,
+            type: "string",
+          },
+        ]),
       );
     }),
   );
