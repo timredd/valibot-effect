@@ -1,4 +1,3 @@
-import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as v from "valibot";
 
@@ -10,7 +9,21 @@ export class ValiError<
   TSchema extends
     | v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>
     | v.BaseSchemaAsync<unknown, unknown, v.BaseIssue<unknown>>,
-> extends Data.TaggedError("ValiError")<{ cause: v.ValiError<TSchema> }> {}
+> extends v.ValiError<TSchema> {
+  readonly _tag: "ValiError" = "ValiError";
+}
+
+/**
+ * @category errors
+ * @since 1.0.0
+ */
+export function isValiError<
+  TSchema extends
+    | v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>
+    | v.BaseSchemaAsync<unknown, unknown, v.BaseIssue<unknown>>,
+>(error: unknown): error is ValiError<TSchema> {
+  return error instanceof ValiError;
+}
 
 /**
  * Parses an input value using the provided Valibot schema and returns an Effect.
@@ -46,8 +59,10 @@ export function parse<
 ): Effect.Effect<v.InferOutput<TSchema>, ValiError<TSchema>, never> {
   return Effect.try({
     try: () => v.parse(schema, input, config),
-    catch: (cause) =>
-      new ValiError({ cause: v.isValiError(cause) ? cause : (cause as any) }),
+    catch: (error) => {
+      (error as any)._tag = "ValiError";
+      return error as ValiError<TSchema>;
+    },
   });
 }
 
@@ -90,8 +105,10 @@ export function parseAsync<
 ): Effect.Effect<v.InferOutput<TSchema>, ValiError<TSchema>, never> {
   return Effect.tryPromise({
     try: () => v.parseAsync(schema, input, config),
-    catch: (cause) =>
-      new ValiError({ cause: v.isValiError(cause) ? cause : (cause as any) }),
+    catch: (error) => {
+      (error as any)._tag = "ValiError";
+      return error as ValiError<TSchema>;
+    },
   });
 }
 
@@ -204,15 +221,4 @@ export function safeParseAsync<
         ? Effect.succeed(result.output)
         : Effect.fail(result.issues),
   );
-}
-
-declare module "valibot" {
-  interface ValiError<
-    TSchema extends
-      | v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>
-      | v.BaseSchemaAsync<unknown, unknown, v.BaseIssue<unknown>>,
-  > {
-    _tag: "ValiError";
-    cause: v.ValiError<TSchema>;
-  }
 }
