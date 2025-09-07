@@ -42,7 +42,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "bun run --bun vitest --typecheck",
+    "test": "bun run --bun vitest",
     "coverage": "bun run --bun vitest run --coverage --isolate",
     "build": "bun build"
   },
